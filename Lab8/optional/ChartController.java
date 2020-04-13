@@ -1,5 +1,10 @@
 package com.company.lab8.compulsory;
 
+import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 
 public class ChartController {
@@ -38,7 +43,7 @@ public class ChartController {
         Connection connection = Database.getInstance().getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement("insert into chart (album_name, listeners, release_year) values (?, ?, ?)")) {
             preparedStatement.setString(1, albumName);
-            preparedStatement.setInt(2,listeners);
+            preparedStatement.setInt(2, listeners);
             preparedStatement.setInt(3, releaseYear);
             preparedStatement.executeUpdate();
 
@@ -76,6 +81,86 @@ public class ChartController {
             System.out.println();
             System.out.println("----------------------");
         }
+    }
+
+    public void report() throws IOException, SQLException {
+        final StringBuilder stringBuilder = new StringBuilder();
+        final BufferedWriter bufferedWriter;
+        PreparedStatement statement;
+        ResultSet resultSet;
+        Desktop desktopManager = Desktop.getDesktop();
+        int counter;
+
+        statement = connection.prepareStatement("select album_name, listeners from chart order by listeners desc");
+        statement.executeQuery();
+        resultSet = statement.getResultSet();
+
+
+        stringBuilder.append(
+                "<!DOCTYPE html>\n" +
+                        "<html lang=\"en\">\n" +
+                        "<head>\n" +
+                        " <meta charset=\"UTF-8\">\n" +
+                        " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                        " <link href=\"https://fonts.googleapis.com/css2?family=Girassol&display=swap\" rel=\"stylesheet\">\n" +
+                        " <title>Chart</title>\n\n" +
+                        " <style>\n" +
+                        "    table {\n" +
+                        "        margin: auto;\n" +
+                        "        font-family: 'Girassol', cursive;\n" +
+                        "        position: relative;\n" +
+                        "        top: 20px;\n" +
+                        "        width: 40%;\n" +
+                        "    }\n\n" +
+
+                        "    th, td {\n" +
+                        "        padding: 5px 60px;\n" +
+                        "        border: 2px;\n" +
+                        "    }\n\n" +
+
+                        "    img {\n" +
+                        "       width: 4vw;\n" +
+                        "     }\n\n" +
+
+                        "    #text{\n" +
+                        "      position: absolute;\n" +
+                        "      top: 2%;\n" +
+                        "      left: 5%;\n" +
+                        "      font-family: 'Girassol', cursive;\n" +
+                        "      font-size:2vw;\n" +
+                        "     }\n\n" +
+                        " </style>\n" +
+
+                        "</head>\n" +
+
+                        "<body>\n" +
+                        " <table border=\"1\">" +
+                        "    <img src=\"logo.png\" alt=\"Logo\">" +
+                        "<div id=\"text\"> Chart </div>" +
+                        " <tr>\n" +
+                        " <th>Id</th>\n" +
+                        " <th>Album name</th>\n" +
+                        " <th>Listeners</th>\n" +
+                        " </tr>"
+        );
+
+        counter = 1;
+        while (resultSet.next()) {
+            stringBuilder.append("<tr>\n");
+            stringBuilder.append("<td>").append(counter).append("</td>\n");
+            stringBuilder.append("<td>").append(resultSet.getString(1)).append("</td>\n");
+            stringBuilder.append("<td>").append(resultSet.getInt(2)).append("</td>\n");
+            stringBuilder.append("</tr>\n\n");
+            counter++;
+        }
+
+        stringBuilder.append("</table>\n" + "</body>\n" + "</html>");
+
+        bufferedWriter = new BufferedWriter(new FileWriter("report.html"));
+        bufferedWriter.write(stringBuilder.toString());
+        bufferedWriter.close();
+
+        desktopManager.open(new File("report.html"));
     }
 
     public Chart getChart() {

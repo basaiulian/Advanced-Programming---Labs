@@ -1,5 +1,6 @@
 package com.company.lab8.compulsory;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
 
@@ -21,7 +22,7 @@ public class Main {
 //            artistController.create("Artist1", "Romania");
 //            artistController.create("Artist2", "Bulgaria");
 
-
+            //afisare artists
             //System.out.println("\n==========Artists==========");
             //System.out.println("-------------------------");
             //artistController.print();
@@ -45,6 +46,7 @@ public class Main {
             //incrementez numarul de ascultatori al unui album
             chartController.listenAlbum("As I Lay Dying");
 
+            //afisare albums
             //System.out.println("\n=========Albums==========");
             //System.out.println("-------------------------");
             //albumController.print();
@@ -54,8 +56,11 @@ public class Main {
             System.out.println("\n=========Chart==========");
             System.out.println("-------------------------");
             chartController.print();
+            chartController.report();
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
