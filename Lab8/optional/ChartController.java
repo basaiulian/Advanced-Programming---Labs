@@ -138,7 +138,7 @@ public class ChartController {
                         "    <img src=\"logo.png\" alt=\"Logo\">" +
                         "<div id=\"text\"> Chart </div>" +
                         " <tr>\n" +
-                        " <th>Id</th>\n" +
+                        " <th>Rank</th>\n" +
                         " <th>Album name</th>\n" +
                         " <th>Listeners</th>\n" +
                         " </tr>"
@@ -160,6 +160,7 @@ public class ChartController {
         bufferedWriter.write(stringBuilder.toString());
         bufferedWriter.close();
 
+        System.out.println("HTML Report created.");
         desktopManager.open(new File("report.html"));
     }
 
