@@ -24,7 +24,7 @@ public class GameClient {
             dataInputStream = new DataInputStream(s.getInputStream());
             dataOutputStream = new DataOutputStream(s.getOutputStream());
 
-            System.out.println("Reserved commands:\n -> " + ANSI_GREEN +"exit\n" + ANSI_RESET + " -> " + ANSI_GREEN + "stop\n" + ANSI_RESET);
+            System.out.println("Reserved commands:\n -> " + ANSI_GREEN + "exit\n" + ANSI_RESET + " -> " + ANSI_GREEN + "stop\n" + ANSI_RESET);
 
             while (true) {
                 String command = scanner.nextLine();
@@ -35,7 +35,7 @@ public class GameClient {
                     break;
                 }
 
-                if(command.equals("stop")){
+                if (command.equals("stop")) {
                     s.close();
                     System.out.println("Server stopped.\n");
                     break;

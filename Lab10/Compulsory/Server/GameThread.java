@@ -40,7 +40,8 @@ public class GameThread extends Thread {
                     this.dataOutputStream.close();
                     System.exit(0);
                 } else {
-                    System.out.println(ANSI_GREEN + "Command received: " + command + ANSI_RESET);                    response = "Executing Command";
+                    System.out.println(ANSI_GREEN + "Command received: " + command + ANSI_RESET);
+                    response = "Executing Command";
                     dataOutputStream.writeUTF(response);
                 }
             } catch (IOException | InterruptedException exception) {
